@@ -1,0 +1,31 @@
+[project]
+name = "sports-coach"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "accelerate>=1.10.0",
+    "flask==2.3.3",
+    "flitz>=0.0.7",
+    "google-generativeai>=0.8.5",
+    "langchain>=0.3.27",
+    "langchain-groq>=0.3.7",
+    "langgraph>=0.6.4",
+    "markdown>=3.8.2",
+    "matplotlib>=3.10.5",
+    "numpy>=2.3.2",
+    "openai>=1.99.6",
+    "pandas>=2.3.1",
+    "pdfplumber>=0.11.7",
+    "peft>=0.17.0",
+    "pymupdf>=1.26.3",
+    "pypandoc>=1.15",
+    "pypdf2>=3.0.1",
+    "python-dotenv>=1.1.1",
+    "reportlab>=4.4.3",
+    "scikit-learn>=1.7.1",
+    "seaborn>=0.13.2",
+    "sentence-transformers>=5.1.0",
+    "weasyprint>=66.0",
+]

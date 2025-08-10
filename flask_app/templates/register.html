@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Register - Recruitment System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card card-custom">
+            <div class="card-header bg-success text-white text-center">
+                <h4><i class="fas fa-user-plus me-2"></i>Create Account</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" name="name" class="form-control" required placeholder="Enter your full name">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" name="email" class="form-control" required placeholder="Enter your email">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" required placeholder="Create a password">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">I am a:</label>
+                        <select name="role" class="form-select" required>
+                            <option value="">Select your role</option>
+                            <option value="recruiter">Recruiter / HR Manager</option>
+                            <option value="candidate">Job Candidate</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Create Account</button>
+                </form>
+                <div class="text-center mt-3">
+                    <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

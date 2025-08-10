@@ -1,0 +1,345 @@
+{% extends "base.html" %}
+{% block title %}Application Details{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card card-custom">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4>{{ application[8] }} - {{ application[7] }}</h4>
+                {% if application[5] %}
+                    {% if application[5] >= 85 %}
+                        <span class="badge score-badge score-excellent">{{ application[5] }}% Match</span>
+                    {% elif application[5] >= 70 %}
+                        <span class="badge score-badge score-good">{{ application[5] }}% Match</span>
+                    {% elif application[5] >= 50 %}
+                        <span class="badge score-badge score-average">{{ application[5] }}% Match</span>
+                    {% else %}
+                        <span class="badge score-badge score-weak">{{ application[5] }}% Match</span>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <p><strong>Candidate:</strong> {{ application[8] }}</p>
+                        <p><strong>Email:</strong> {{ application[9] }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Applied:</strong> {{ application[6][:16] }}</p>
+                        <p><strong>Status:</strong> 
+                            <span class="badge bg-{% if application[4] == 'pending' %}warning{% elif application[4] == 'shortlisted' %}success{% else %}secondary{% endif %}">
+                                {{ application[4].title() }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                {% if analysis_data %}
+                <div class="analysis-section">
+                    <h5><i class="fas fa-chart-bar me-2"></i>AI Analysis Results</h5>
+                    
+                    <!-- Charts Section -->
+                    {% if charts %}
+                    <div class="charts-section mb-4">
+                        <div class="row">
+                            {% if charts.get('overall_score') %}
+                            <div class="col-lg-6 mb-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <img src="data:image/png;base64,{{ charts.overall_score }}" class="img-fluid" alt="Overall Score">
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if charts.get('radar_chart') %}
+                            <div class="col-lg-6 mb-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <img src="data:image/png;base64,{{ charts.radar_chart }}" class="img-fluid" alt="Component Breakdown">
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="row">
+                            {% if charts.get('skills_analysis') %}
+                            <div class="col-12 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6><i class="fas fa-cogs me-2"></i>Skills Analysis</h6>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <img src="data:image/png;base64,{{ charts.skills_analysis }}" class="img-fluid" alt="Skills Analysis">
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="row">
+                            {% if charts.get('experience_tech') %}
+                            <div class="col-12 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6><i class="fas fa-laptop-code me-2"></i>Experience & Technology Stack</h6>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <img src="data:image/png;base64,{{ charts.experience_tech }}" class="img-fluid" alt="Experience and Technology">
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="row">
+                            {% if charts.get('recommendations') %}
+                            <div class="col-12 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6><i class="fas fa-lightbulb me-2"></i>Key Improvement Areas</h6>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <img src="data:image/png;base64,{{ charts.recommendations }}" class="img-fluid" alt="Recommendations Analysis">
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if analysis_data.get('description') %}
+                    <div class="alert alert-info">
+                        <h6>Summary:</h6>
+                        <p class="mb-0">{{ analysis_data.description }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if analysis_data.get('score_breakdown') %}
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6>Component Scores:</h6>
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    Skills <span class="badge bg-primary">{{ analysis_data.score_breakdown.get('skills_score', 0) }}%</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    Experience <span class="badge bg-primary">{{ analysis_data.score_breakdown.get('experience_score', 0) }}%</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    Education <span class="badge bg-primary">{{ analysis_data.score_breakdown.get('education_score', 0) }}%</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    Certifications <span class="badge bg-primary">{{ analysis_data.score_breakdown.get('certifications_score', 0) }}%</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            {% if analysis_data.get('metadata') %}
+                            <h6>Candidate Profile:</h6>
+                            <ul class="list-group">
+                                {% if analysis_data.metadata.get('years_experience') %}
+                                <li class="list-group-item">
+                                    <strong>Experience:</strong> {{ analysis_data.metadata.years_experience }} years
+                                </li>
+                                {% endif %}
+                                {% if analysis_data.metadata.get('seniority') %}
+                                <li class="list-group-item">
+                                    <strong>Level:</strong> {{ analysis_data.metadata.seniority.title() }}
+                                </li>
+                                {% endif %}
+                                {% if analysis_data.metadata.get('education_level') %}
+                                <li class="list-group-item">
+                                    <strong>Education:</strong> {{ analysis_data.metadata.education_level }}
+                                </li>
+                                {% endif %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if analysis_data.get('matching_analysis') %}
+                    <div class="mb-4">
+                        <h6>Detailed Analysis:</h6>
+                        <div class="p-3 bg-light rounded">
+                            {{ analysis_data.matching_analysis }}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if analysis_data.get('recommendation') %}
+                    <div class="mb-4">
+                        <h6>Recommendations for Candidate:</h6>
+                        <div class="p-3 bg-warning bg-opacity-25 rounded">
+                            {{ analysis_data.recommendation }}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if analysis_data.get('metadata') %}
+                    <div class="row">
+                        {% if analysis_data.metadata.get('matched_skills') %}
+                        <div class="col-md-6 mb-3">
+                            <h6>Matched Skills:</h6>
+                            {% for skill in analysis_data.metadata.matched_skills[:10] %}
+                                <span class="badge bg-success me-1 mb-1">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        {% if analysis_data.metadata.get('missing_skills') %}
+                        <div class="col-md-6 mb-3">
+                            <h6>Missing Skills:</h6>
+                            {% for skill in analysis_data.metadata.missing_skills[:10] %}
+                                <span class="badge bg-danger me-1 mb-1">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        {% if analysis_data.metadata.get('cloud_experience') %}
+                        <div class="col-md-6 mb-3">
+                            <h6>Cloud Experience:</h6>
+                            {% for cloud in analysis_data.metadata.cloud_experience %}
+                                <span class="badge bg-info me-1 mb-1">{{ cloud }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        {% if analysis_data.metadata.get('languages') %}
+                        <div class="col-md-6 mb-3">
+                            <h6>Programming Languages:</h6>
+                            {% for lang in analysis_data.metadata.languages %}
+                                <span class="badge bg-primary me-1 mb-1">{{ lang }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-robot fa-3x text-muted mb-3"></i>
+                    <h5>AI Analysis Pending</h5>
+                    <p class="text-muted">This application hasn't been analyzed yet. Click "Run AI Analysis" from the job applications page.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h6><i class="fas fa-tools me-2"></i>Actions</h6>
+            </div>
+            <div class="card-body">
+                {% if session.role == 'recruiter' %}
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('job_applications', job_id=application[1]) }}" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Applications
+                    </a>
+                    <a href="{{ application[3] }}" class="btn btn-outline-info" target="_blank">
+                        <i class="fas fa-file-pdf me-2"></i>Download Resume
+                    </a>
+                    <hr>
+                    <button class="btn btn-success btn-sm">Shortlist</button>
+                    <button class="btn btn-warning btn-sm">Schedule Interview</button>
+                    <button class="btn btn-danger btn-sm">Reject</button>
+                </div>
+                {% else %}
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('candidate_dashboard') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                    {% if analysis_data and analysis_data.get('recommendation') %}
+                    <div class="alert alert-info small">
+                        <strong>Tip:</strong> Review the recommendations to improve your profile for similar roles.
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if analysis_data and analysis_data.get('metadata') %}
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6><i class="fas fa-info-circle me-2"></i>Quick Stats</h6>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    {% if analysis_data.metadata.get('matched_skills') %}
+                    <div class="col-6 mb-3">
+                        <h4 class="text-success">{{ analysis_data.metadata.matched_skills|length }}</h4>
+                        <small class="text-muted">Matched Skills</small>
+                    </div>
+                    {% endif %}
+                    {% if analysis_data.metadata.get('missing_skills') %}
+                    <div class="col-6 mb-3">
+                        <h4 class="text-danger">{{ analysis_data.metadata.missing_skills|length }}</h4>
+                        <small class="text-muted">Missing Skills</small>
+                    </div>
+                    {% endif %}
+                    {% if analysis_data.metadata.get('years_experience') %}
+                    <div class="col-6 mb-3">
+                        <h4 class="text-primary">{{ analysis_data.metadata.years_experience }}</h4>
+                        <small class="text-muted">Years Experience</small>
+                    </div>
+                    {% endif %}
+                    {% if analysis_data.metadata.get('interview_readiness') %}
+                    <div class="col-6 mb-3">
+                        <h6 class="
+                            {% if analysis_data.metadata.interview_readiness == 'Ready' %}text-success
+                            {% elif analysis_data.metadata.interview_readiness == 'NeedsPrep' %}text-warning
+                            {% else %}text-danger{% endif %}
+                        ">{{ analysis_data.metadata.interview_readiness }}</h6>
+                        <small class="text-muted">Interview Ready</small>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="mt-4">
+    {% if session.role == 'recruiter' %}
+    <a href="{{ url_for('job_applications', job_id=application[1]) }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Back to All Applications
+    </a>
+    {% else %}
+    <a href="{{ url_for('candidate_dashboard') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+    </a>
+    {% endif %}
+</div>
+{% endblock %}
+
+<!-- Additional JavaScript for interactive features -->
+{% block scripts %}
+<script>
+// Add any interactive features here
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+
+    // Add confirmation for action buttons
+    const actionButtons = document.querySelectorAll('.btn-danger, .btn-warning');
+    actionButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            if (!confirm('Are you sure you want to perform this action?')) {
+                e.preventDefault();
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="gradient-bg d-flex align-items-center justify-content-center" style="min-height: 80vh; margin: -1.5rem; padding: 1.5rem;">
+    <div class="text-center text-white">
+        <div class="mb-5">
+            <i class="fas fa-robot fa-5x mb-4"></i>
+            <h1 class="display-3 fw-bold">RecruitmentAI</h1>
+            <p class="lead fs-4">AI-Powered Resume Matching & Recruitment Platform</p>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card card-custom bg-white text-dark dashboard-card h-100">
+                            <div class="card-body text-center p-5">
+                                <i class="fas fa-user-tie fa-3x text-primary mb-3"></i>
+                                <h3>For Recruiters</h3>
+                                <p class="text-muted">Post jobs, analyze resumes with AI, and find the perfect candidates</p>
+                                <a href="{{ url_for('login') }}" class="btn btn-gradient btn-lg">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Recruiter Portal
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card card-custom bg-white text-dark dashboard-card h-100">
+                            <div class="card-body text-center p-5">
+                                <i class="fas fa-user-graduate fa-3x text-success mb-3"></i>
+                                <h3>For Candidates</h3>
+                                <p class="text-muted">Find your dream job and get AI-powered resume feedback</p>
+                                <a href="{{ url_for('login') }}" class="btn btn-success btn-lg">
+                                    <i class="fas fa-search me-2"></i>Find Jobs
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-5">
+            <p class="text-light">Don't have an account? 
+                <a href="{{ url_for('register') }}" class="text-white fw-bold text-decoration-underline">
+                    Register here
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
